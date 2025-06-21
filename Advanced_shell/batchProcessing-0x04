@@ -1,0 +1,15 @@
+#!/bin/bash
+mkdir -p pokemon_data
+pokemon_list=(bulbasaur ivysaur venusaur charmander charmeleon)
+
+for name in "${pokemon_list[@]}"; do
+  (
+    echo "Fetching $name..."
+    curl -s -f "https://pokeapi.co/api/v2/pokemon/$name" -o "pokemon_data/$name.json" \
+    && echo "Saved $name ✅" \
+    || echo "Error fetching $name" >> errors.txt
+  ) &
+done
+
+wait
+echo "All fetch operations completed."
